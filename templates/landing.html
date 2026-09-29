@@ -6,7 +6,6 @@
 
 <section class="hero">
     <div class="hero-inner">
-        <div class="hero-badge">Personal Finance Tracker</div>
         <h1 class="hero-title">
             Know where your<br>
             <em>money goes</em>
@@ -21,62 +20,76 @@
             <a href="{{ url_for('login') }}" class="btn-ghost">Sign in</a>
         </div>
     </div>
-    <div class="hero-visual">
-        <div class="mock-card">
-            <div class="mock-card-header">
-                <span class="mock-label">March 2026</span>
-                <span class="mock-total">₹12,450</span>
-            </div>
-            <div class="mock-bars">
-                <div class="mock-bar-row">
-                    <span class="mock-cat">Bills</span>
-                    <div class="mock-bar-track">
-                        <div class="mock-bar" style="width: 72%"></div>
-                    </div>
-                    <span class="mock-amt">₹4,500</span>
-                </div>
-                <div class="mock-bar-row">
-                    <span class="mock-cat">Food</span>
-                    <div class="mock-bar-track">
-                        <div class="mock-bar mock-bar-2" style="width: 52%"></div>
-                    </div>
-                    <span class="mock-amt">₹3,200</span>
-                </div>
-                <div class="mock-bar-row">
-                    <span class="mock-cat">Health</span>
-                    <div class="mock-bar-track">
-                        <div class="mock-bar mock-bar-3" style="width: 33%"></div>
-                    </div>
-                    <span class="mock-amt">₹2,050</span>
-                </div>
-                <div class="mock-bar-row">
-                    <span class="mock-cat">Transport</span>
-                    <div class="mock-bar-track">
-                        <div class="mock-bar mock-bar-4" style="width: 28%"></div>
-                    </div>
-                    <span class="mock-amt">₹1,800</span>
-                </div>
-            </div>
+
+    <div class="hero-visual" aria-hidden="true">
+        <div class="tile tile-badge">
+            <svg class="badge" viewBox="0 0 120 120">
+                <defs><path id="badge-ring-1" d="M60 60m-46 0a46 46 0 1 1 92 0a46 46 0 1 1-92 0"/></defs>
+                <text class="badge-text"><textPath href="#badge-ring-1" textLength="286" lengthAdjust="spacing">Track every rupee • Own your finances •</textPath></text>
+                <circle class="badge-core" cx="60" cy="60" r="30"/>
+                <path class="badge-star" d="M60 42l4 14 14 4-14 4-4 14-4-14-14-4 14-4z"/>
+            </svg>
         </div>
+        <div class="tile"></div>
+        <div class="tile tile-stat">
+            <span class="stat-value">₹12,450</span>
+            <svg class="waves" viewBox="0 0 120 60" preserveAspectRatio="none">
+                <path class="wave wave-1" d="M0 52H40C52 52 52 34 64 34H76C88 34 88 16 100 16H120"/>
+                <path class="wave wave-2" d="M0 58H44C56 58 56 40 68 40H80C92 40 92 22 104 22H120"/>
+                <path class="wave wave-3" d="M0 46H36C48 46 48 28 60 28H72C84 28 84 10 96 10H120"/>
+            </svg>
+            <span class="stat-label">March 2026</span>
+        </div>
+        <div class="tile"></div>
+
+        <div class="tile tile-pulse">
+            <span class="pulse-text pulse-text-top">Track every rupee</span>
+            <svg class="pulse" viewBox="0 0 400 100" preserveAspectRatio="none">
+                <path d="M110 50H130C136 50 138 62 143 62C149 62 151 36 157 36C163 36 166 70 172 70C180 70 184 6 196 6C207 6 211 90 220 90C228 90 231 34 238 34C244 34 246 50 252 50H270"/>
+            </svg>
+            <span class="pulse-dot"></span>
+            <span class="pulse-text pulse-text-bottom">Own your finances</span>
+        </div>
+
+        <div class="tile tile-waves">
+            <svg class="waves" viewBox="0 0 120 60" preserveAspectRatio="none">
+                <path class="wave wave-4" d="M0 52H40C52 52 52 34 64 34H76C88 34 88 16 100 16H120"/>
+                <path class="wave wave-2" d="M0 58H44C56 58 56 40 68 40H80C92 40 92 22 104 22H120"/>
+                <path class="wave wave-3" d="M0 46H36C48 46 48 28 60 28H72C84 28 84 10 96 10H120"/>
+            </svg>
+        </div>
+        <div class="tile"></div>
+        <div class="tile tile-badge">
+            <svg class="badge" viewBox="0 0 120 120">
+                <defs><path id="badge-ring-2" d="M60 60m-46 0a46 46 0 1 1 92 0a46 46 0 1 1-92 0"/></defs>
+                <text class="badge-text"><textPath href="#badge-ring-2" textLength="286" lengthAdjust="spacing">Track every rupee • Own your finances •</textPath></text>
+                <circle class="badge-core" cx="60" cy="60" r="30"/>
+                <path class="badge-star badge-star-alt" d="M60 42l4 14 14 4-14 4-4 14-4-14-14-4 14-4z"/>
+            </svg>
+        </div>
+        <div class="tile"></div>
     </div>
 </section>
 
-<section class="features">
+<section class="features" id="features">
     <div class="features-inner">
-        <div class="feature-card">
-            <div class="feature-icon">₹</div>
-            <h3 class="feature-title">Log expenses instantly</h3>
-            <p class="feature-body">Add any expense in seconds. Category, amount, date, description — all in one simple form.</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon">◎</div>
-            <h3 class="feature-title">Understand your patterns</h3>
-            <p class="feature-body">See exactly where your money goes with category breakdowns and monthly summaries.</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon">◷</div>
-            <h3 class="feature-title">Filter by time period</h3>
-            <p class="feature-body">View your spending for any date range — last week, last month, or a custom period.</p>
+        <p class="features-label">What you get</p>
+        <div class="features-row">
+            <div class="feature-card">
+                <div class="feature-icon">₹</div>
+                <h3 class="feature-title">Log expenses instantly</h3>
+                <p class="feature-body">Add any expense in seconds. Category, amount, date, description — all in one simple form.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">◎</div>
+                <h3 class="feature-title">Understand your patterns</h3>
+                <p class="feature-body">See exactly where your money goes with category breakdowns and monthly summaries.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">◷</div>
+                <h3 class="feature-title">Filter by time period</h3>
+                <p class="feature-body">View your spending for any date range — last week, last month, or a custom period.</p>
+            </div>
         </div>
     </div>
 </section>

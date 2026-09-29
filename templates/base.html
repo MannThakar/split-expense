@@ -18,9 +18,15 @@
                 <span class="brand-icon">◈</span>
                 <span class="brand-name">Spendly</span>
             </a>
+            <div class="nav-menu">
+                <a href="{{ url_for('landing') }}#features" class="nav-menu-secondary">Features</a>
+                <a href="{{ url_for('register') }}">Get started</a>
+            </div>
             <div class="nav-links">
-                <a href="{{ url_for('login') }}">Sign in</a>
-                <a href="{{ url_for('register') }}" class="nav-cta">Get started</a>
+                <a href="{{ url_for('login') }}" class="nav-signin">
+                    Sign in
+                    <svg class="nav-arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg>
+                </a>
             </div>
         </div>
     </nav>
