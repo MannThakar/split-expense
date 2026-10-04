@@ -1,6 +1,25 @@
 from flask import Flask, render_template
+import sys
+import psycopg2
+from database.db import get_db, init_db, seed_db
 
 app = Flask(__name__)
+
+
+# ------------------------------------------------------------------ #
+# Database startup                                                    #
+# ------------------------------------------------------------------ #
+
+try:
+    init_db()
+    seed_db()
+except psycopg2.OperationalError:
+    print(
+        "Could not connect to PostgreSQL. Check that the server is running and "
+        "DB_HOST/DB_PORT/DB_NAME/DB_USER/DB_PASSWORD are set correctly.",
+        file=sys.stderr,
+    )
+    sys.exit(1)
 
 
 # ------------------------------------------------------------------ #
