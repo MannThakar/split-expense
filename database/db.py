@@ -31,7 +31,17 @@ CREATE TABLE IF NOT EXISTS expenses (
 );
 """
 
+# Emails are saved lowercase; this also enforces case-insensitive uniqueness
+# for any future path that creates users.
+CREATE_EMAIL_LOWER_INDEX_SQL = """
+CREATE UNIQUE INDEX IF NOT EXISTS users_email_lower_idx ON users (LOWER(email));
+"""
+
 DEMO_EMAIL = "demo@spendly.dev"
+
+
+class EmailTakenError(Exception):
+    """Raised by create_user when the email already belongs to an account."""
 DEMO_PASSWORD = "demo1234"
 
 
@@ -64,6 +74,7 @@ def init_db():
         with conn.cursor() as cur:
             cur.execute(CREATE_USERS_SQL)
             cur.execute(CREATE_EXPENSES_SQL)
+            cur.execute(CREATE_EMAIL_LOWER_INDEX_SQL)
         conn.commit()
     except Exception:
         conn.rollback()
@@ -104,6 +115,29 @@ def seed_db():
         conn.commit()
     except psycopg2.errors.UniqueViolation:
         conn.rollback()  # concurrent instance won the seeding race — not an error
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        conn.close()
+
+
+def create_user(name, email, password):
+    """Creates a user and returns its id. Expects a trimmed name and a
+    lowercased email; raises EmailTakenError if the email is already used."""
+    conn = get_db()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "INSERT INTO users (name, email, password_hash) VALUES (%s, %s, %s) RETURNING id",
+                (name, email, generate_password_hash(password)),
+            )
+            user_id = cur.fetchone()["id"]
+        conn.commit()
+        return user_id
+    except psycopg2.errors.UniqueViolation:
+        conn.rollback()
+        raise EmailTakenError(email)
     except Exception:
         conn.rollback()
         raise
