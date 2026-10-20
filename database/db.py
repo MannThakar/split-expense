@@ -122,6 +122,21 @@ def seed_db():
         conn.close()
 
 
+def get_user_by_email(email):
+    """Returns the user row (id, name, email, password_hash) or None.
+    Expects a trimmed, lowercased email."""
+    conn = get_db()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT id, name, email, password_hash FROM users WHERE LOWER(email) = %s",
+                (email,),
+            )
+            return cur.fetchone()
+    finally:
+        conn.close()
+
+
 def create_user(name, email, password):
     """Creates a user and returns its id. Expects a trimmed name and a
     lowercased email; raises EmailTakenError if the email is already used."""

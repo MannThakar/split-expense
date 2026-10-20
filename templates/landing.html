@@ -5,69 +5,24 @@
 {% block content %}
 
 <section class="hero">
-    <div class="hero-inner">
-        <h1 class="hero-title">
-            Know where your<br>
-            <em>money goes</em>
-        </h1>
-        <p class="hero-subtitle">
-            Log expenses, understand your spending patterns,
-            and take control of your financial life —
-            one transaction at a time.
-        </p>
-        <div class="hero-actions">
-            <a href="{{ url_for('register') }}" class="btn-primary">Start tracking free</a>
-            <a href="{{ url_for('login') }}" class="btn-ghost">Sign in</a>
-        </div>
+    <div class="hero-mesh" aria-hidden="true">
+        <img src="{{ url_for('static', filename='img/hero-looper.svg') }}" alt="" width="2260" height="1396">
     </div>
 
-    <div class="hero-visual" aria-hidden="true">
-        <div class="tile tile-badge">
-            <svg class="badge" viewBox="0 0 120 120">
-                <defs><path id="badge-ring-1" d="M60 60m-46 0a46 46 0 1 1 92 0a46 46 0 1 1-92 0"/></defs>
-                <text class="badge-text"><textPath href="#badge-ring-1" textLength="286" lengthAdjust="spacing">Track every rupee • Own your finances •</textPath></text>
-                <circle class="badge-core" cx="60" cy="60" r="30"/>
-                <path class="badge-star" d="M60 42l4 14 14 4-14 4-4 14-4-14-14-4 14-4z"/>
-            </svg>
+    <div class="hero-inner">
+        <h1 class="hero-title">
+            <span class="hero-title-gradient">Track every rupee.</span>
+            <span class="hero-title-solid">Own your finances.</span>
+        </h1>
+        <p class="hero-subtitle">
+            Spendly logs every expense in seconds and shows you exactly where
+            your money goes &mdash; by category, by month, or across any date
+            range you choose.
+        </p>
+        <div class="hero-actions">
+            <a href="{{ url_for('register') }}" class="hero-btn hero-btn-primary">Get started</a>
+            <a href="{{ url_for('login') }}" class="hero-btn hero-btn-secondary">Sign in</a>
         </div>
-        <div class="tile"></div>
-        <div class="tile tile-stat">
-            <span class="stat-value">₹12,450</span>
-            <svg class="waves" viewBox="0 0 120 60" preserveAspectRatio="none">
-                <path class="wave wave-1" d="M0 52H40C52 52 52 34 64 34H76C88 34 88 16 100 16H120"/>
-                <path class="wave wave-2" d="M0 58H44C56 58 56 40 68 40H80C92 40 92 22 104 22H120"/>
-                <path class="wave wave-3" d="M0 46H36C48 46 48 28 60 28H72C84 28 84 10 96 10H120"/>
-            </svg>
-            <span class="stat-label">March 2026</span>
-        </div>
-        <div class="tile"></div>
-
-        <div class="tile tile-pulse">
-            <span class="pulse-text pulse-text-top">Track every rupee</span>
-            <svg class="pulse" viewBox="0 0 400 100" preserveAspectRatio="none">
-                <path d="M110 50H130C136 50 138 62 143 62C149 62 151 36 157 36C163 36 166 70 172 70C180 70 184 6 196 6C207 6 211 90 220 90C228 90 231 34 238 34C244 34 246 50 252 50H270"/>
-            </svg>
-            <span class="pulse-dot"></span>
-            <span class="pulse-text pulse-text-bottom">Own your finances</span>
-        </div>
-
-        <div class="tile tile-waves">
-            <svg class="waves" viewBox="0 0 120 60" preserveAspectRatio="none">
-                <path class="wave wave-4" d="M0 52H40C52 52 52 34 64 34H76C88 34 88 16 100 16H120"/>
-                <path class="wave wave-2" d="M0 58H44C56 58 56 40 68 40H80C92 40 92 22 104 22H120"/>
-                <path class="wave wave-3" d="M0 46H36C48 46 48 28 60 28H72C84 28 84 10 96 10H120"/>
-            </svg>
-        </div>
-        <div class="tile"></div>
-        <div class="tile tile-badge">
-            <svg class="badge" viewBox="0 0 120 120">
-                <defs><path id="badge-ring-2" d="M60 60m-46 0a46 46 0 1 1 92 0a46 46 0 1 1-92 0"/></defs>
-                <text class="badge-text"><textPath href="#badge-ring-2" textLength="286" lengthAdjust="spacing">Track every rupee • Own your finances •</textPath></text>
-                <circle class="badge-core" cx="60" cy="60" r="30"/>
-                <path class="badge-star badge-star-alt" d="M60 42l4 14 14 4-14 4-4 14-4-14-14-4 14-4z"/>
-            </svg>
-        </div>
-        <div class="tile"></div>
     </div>
 </section>
 

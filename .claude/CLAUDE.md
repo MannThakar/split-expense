@@ -13,7 +13,7 @@ Windows venv (`venv/Scripts/`), Python on the path as `python`:
 ```bash
 venv/Scripts/python app.py          # dev server: http://localhost:5001, debug=True
 venv/Scripts/pip install -r requirements.txt
-venv/Scripts/python -m pytest       # no tests exist yet; pytest + pytest-flask are installed
+venv/Scripts/python -m pytest       # needs a running PostgreSQL server
 venv/Scripts/python -m pytest tests/test_auth.py::test_register_creates_user   # single test
 ```
 
@@ -22,7 +22,7 @@ There is no build step, no linter, and no JS toolchain — CSS and JS are hand-w
 ## Architecture
 
 - **`app.py`** — the entire application: a module-level `app = Flask(__name__)` plus route functions. No blueprints, no app factory, no config module. New routes go here.
-- **`database/db.py`** — the only data layer. Raw `sqlite3` (no ORM) against `expense_tracker.db` (gitignored, created at runtime). The intended API is `get_db()` (connection with `row_factory` set and foreign keys enabled), `init_db()` (`CREATE TABLE IF NOT EXISTS`), and `seed_db()` (sample dev data).
+- **`database/db.py`** — the only data layer. Raw `psycopg2` (no ORM) against PostgreSQL. `get_db()` returns a new connection using `RealDictCursor` (rows are dicts); the caller must commit/rollback and close it. Connection settings come from `DB_HOST`, `DB_PORT`, `DB_NAME` (default `expense_tracker`), `DB_USER`, `DB_PASSWORD`. `init_db()` runs `CREATE TABLE IF NOT EXISTS`; `seed_db()` adds the demo user and sample expenses. Queries use `%s` placeholders. Tests use a separate `expense_tracker_test` database, created by `tests/conftest.py`.
 - **`templates/`** — Jinja2. Every page does `{% extends "base.html" %}` and fills `{% block title %}` and `{% block content %}`; `base.html` also offers `head` and `scripts` blocks and owns the navbar and footer. Links use `url_for('<route_function>')`, so renaming a route function breaks templates.
 - **`static/css/style.css`** — one ~725-line stylesheet, no framework. Design tokens live in `:root` (`--ink*`, `--paper*`, `--accent*`, `--radius-*`, `--font-display`/`--font-body`); use them rather than literal colors. Sections are separated by full-width `/* ---- */` banner comments matching the page or component (Navbar, Hero, Buttons, Auth pages, Legal pages, Footer, Responsive) — add new component styles as a new banner-comment section, and keep `Responsive` last.
 - **`static/js/main.js`** — currently empty; the app is server-rendered, so reach for JS only when a feature genuinely needs it.

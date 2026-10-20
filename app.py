@@ -1,9 +1,12 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 import os
 import re
 import sys
 import psycopg2
-from database.db import get_db, init_db, seed_db, create_user, EmailTakenError
+from werkzeug.security import generate_password_hash, check_password_hash
+from database.db import (
+    get_db, init_db, seed_db, create_user, get_user_by_email, EmailTakenError,
+)
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-only-change-me")
@@ -62,8 +65,29 @@ def validate_registration(name, email, password, confirm):
     return None
 
 
+def validate_login(email, password):
+    """Returns the first error message in field order, or None if all valid."""
+    if not email:
+        return "Please enter your email address."
+    if len(email) > 254:
+        return "Email must be 254 characters or fewer."
+    if not EMAIL_RE.match(email):
+        return "Please enter a valid email address."
+    if not password:
+        return "Please enter your password."
+    return None
+
+
+# Compared against when the email has no account, so an unknown email takes
+# about as long to reject as a wrong password (BR-1).
+_DUMMY_HASH = generate_password_hash("not-a-real-password")
+
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    if session.get("user_id"):
+        return redirect(url_for("profile"))
+
     if request.method == "GET":
         return render_template("register.html")
 
@@ -90,9 +114,44 @@ def register():
     return redirect(url_for("login"))
 
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    return render_template("login.html")
+    if session.get("user_id"):
+        return redirect(url_for("profile"))
+
+    if request.method == "GET":
+        return render_template("login.html")
+
+    email = request.form.get("email", "").strip()
+    password = request.form.get("password", "")
+
+    error = validate_login(email, password)
+    if error:
+        return render_template("login.html", error=error, email=email)
+
+    try:
+        user = get_user_by_email(email.lower())
+    except Exception:
+        app.logger.exception("Sign-in failed")
+        error = "We couldn't sign you in right now. Please try again in a moment."
+        return render_template("login.html", error=error, email=email)
+
+    password_ok = check_password_hash(user["password_hash"] if user else _DUMMY_HASH, password)
+    if not user or not password_ok:
+        error = "Incorrect email or password."
+        return render_template("login.html", error=error, email=email)
+
+    session.clear()
+    session["user_id"] = user["id"]
+    return redirect(url_for("profile"))
+
+
+@app.route("/logout")
+def logout():
+    if session.get("user_id"):
+        session.clear()
+        flash("You have been signed out.", "success")
+    return redirect(url_for("login"))
 
 
 @app.route("/terms")
@@ -108,11 +167,6 @@ def privacy():
 # ------------------------------------------------------------------ #
 # Placeholder routes — students will implement these                  #
 # ------------------------------------------------------------------ #
-
-@app.route("/logout")
-def logout():
-    return "Logout — coming in Step 3"
-
 
 @app.route("/profile")
 def profile():

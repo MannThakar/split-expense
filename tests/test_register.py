@@ -392,7 +392,6 @@ def test_tc47_demo_data_unchanged_after_registration_and_restart(client):
 @pytest.mark.parametrize(
     "path, text",
     [
-        ("/logout", "Logout — coming in Step 3"),
         ("/profile", "Profile page — coming in Step 4"),
         ("/expenses/add", "Add expense — coming in Step 7"),
     ],
